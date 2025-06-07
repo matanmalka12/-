@@ -179,25 +179,29 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
   font-weight: bold;
   cursor: pointer;
 }
+
+
+/* ביטול מוחלט של רקעים צהובים והסתרת תוכן ברירת מחדל */
 #cardsRemaining,
-#cardsRemaining span,
-#cardsRemaining div {
+#cardsRemaining *,
+#timer,
+#timer *,
+#cardsRemaining::before,
+#timer::before {
   font-size: 14px;
   color: #111 !important;
   margin-top: 6px;
   display: block;
   background: transparent !important;
-  font-weight: normal;
-  padding: 0;
+  background-color: transparent !important;
+  font-weight: normal !important;
+  padding: 0 !important;
   border: none !important;
+  visibility: hidden;
 }
 
-/* ביטול רקע רק לאזורים קריטיים */
-body,
-#gameScreen,
-#turnDisplay,
-#scoreBoard,
-.card-text,
-.card-level-icon {
-  background-color: transparent !important;
+/* כשהתוכן נטען - אפשר להחליף ל-visibility: visible דרך JS */
+#cardsRemaining.loaded,
+#timer.loaded {
+  visibility: visible !important;
 }

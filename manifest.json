@@ -6,6 +6,8 @@
   "background_color": "#fad0c4",
   "theme_color": "#ff9a9e",
   "orientation": "portrait",
+  "lang": "he",
+  "description": "משחק זוגי חווייתי עם קלפים לא שגרתיים",
   "icons": [
     {
       "src": "icon-192.png",

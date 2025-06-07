@@ -97,6 +97,7 @@ function drawCard() {
   updateCardIndex();
   updateCardsRemaining();
   $('cardsRemaining').style.display = 'block';
+  $('cardsRemaining').classList.add('loaded');
 
   const cardArea = $('cardArea');
   cardArea.className = 'card-lvl-' + (card.level || 1);
@@ -158,6 +159,7 @@ function resetCardArea() {
 
 function startTimer(sec) {
   $('timer').style.display = 'block';
+  $('timer').classList.add('loaded');
   $('timer').innerText = '⏳ ' + sec;
   clearInterval(timerInt);
   $('completeBtn').style.display = 'inline-block';
@@ -176,6 +178,7 @@ function startTimer(sec) {
 function clearTimer() {
   if (timerInt) clearInterval(timerInt);
   timerInt = null;
+  $('timer').classList.remove('loaded');
   $('timer').style.display = 'none';
   $('timer').innerText = '';
 }
@@ -234,7 +237,13 @@ function updateCardIndex() {
 function updateCardsRemaining() {
   const el = document.getElementById('cardsRemaining');
   if (el) {
-    el.innerText = `קלפים נשארו: ${cardsToPlay.length}`;
+    if (cardsToPlay.length > 0) {
+      el.innerText = `קלפים נשארו: ${cardsToPlay.length}`;
+      el.classList.add('loaded');
+    } else {
+      el.innerText = '';
+      el.classList.remove('loaded');
+    }
     console.log('✅ עדכון קלפים נשארו:', cardsToPlay.length);
   } else {
     console.warn('⚠️ אלמנט cardsRemaining לא נמצא');
