@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>🎲 Game and Beyond</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icon-192.png">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    #landingScreen {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+    #landingScreen h1 {
+      font-size: 2.4em;
+      margin-bottom: 10px;
+    }
+    #landingScreen p {
+      margin-bottom: 30px;
+    }
+    .menu-btn {
+      background: white;
+      color: black;
+      border: none;
+      padding: 15px 30px;
+      margin: 10px 0;
+      font-size: 1em;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .menu-btn.locked {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    #cardIndexPanel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background: #2b0b0e;
+      color: white;
+      overflow-y: auto;
+      padding: 10px;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 999;
+    }
+    #cardIndexPanel h3 {
+      margin-top: 0;
+      color: gold;
+    }
+    .card-index-item {
+      margin: 5px 0;
+      padding: 5px;
+      border-bottom: 1px solid #444;
+      font-size: 14px;
+    }
+    .card-played {
+      text-decoration: line-through;
+      color: #999;
+    }
+    #showIndexBtn {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      padding: 8px 16px;
+      background: white;
+      border-radius: 12px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #startScreen {
+      background: linear-gradient(to bottom, #ff9a9e, #fad0c4);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    #startScreen h1 {
+      font-size: 2.2em;
+      margin-bottom: 10px;
+      color: #222;
+    }
+    #startScreen input,
+    #startScreen button,
+    #moodButtons button {
+      margin: 8px;
+      padding: 10px 16px;
+      font-size: 1em;
+      border-radius: 8px;
+    }
+    #cardsRemaining {
+      font-size: 16px;
+      margin-top: 10px;
+      color: #111;
+      display: block;
+    }
+    @media (max-width: 480px) {
+      #cardsRemaining {
+        font-size: 18px;
+        color: #000;
+        margin-top: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- דף נחיתה -->
+<div id="landingScreen">
+  <h1>דייט לא שגרתי 🎉</h1>
+  <p>ערב של קלפים, שיחה, גירוי וצחוק שלא יישאר אתכם אדישים.<br>בחרו את מצב הרוח שלכם – והמשחק מתחיל! 🔥</p>
+  <button class="menu-btn" onclick="enterGame()">🎙 נכנסים להריון – משחק פתוח</button>
+  <button class="menu-btn locked">🔒 מי מכיר את מי – בקרוב 🧠</button>
+  <button class="menu-btn locked">🔒 קלפי שתייה לוהטים – בקרוב 🍸</button>
+  <button class="menu-btn locked">🔒 אמת, חובה ותשוקה – בקרוב 🍪</button>
+</div>
+
+<!-- אינדקס קלפים -->
+<div id="cardIndexPanel">
+  <h3>📋 אינדקס קלפים</h3>
+  <div id="cardIndexList"></div>
+</div>
+<button id="showIndexBtn" onclick="toggleCardIndex()">📚 הצג את כל הקלפים</button>
+
+<!-- המשחק עצמו (מוסתר בהתחלה) -->
+<div id="startScreen" style="display:none">
+  <h1>🎲 דייט לא שגרתי</h1>
+  <label>שם שחקן 1:
+    <input id="player1Name" type="text" placeholder="מתן">
+  </label><br>
+  <label>שם שחקן 2:
+    <input id="player2Name" type="text" placeholder="אור">
+  </label><br>
+  <label>מצב רוח:</label>
+  <div id="moodButtons">
+    <button class="mood-btn selected" data-mood="mixed" onclick="setMood('mixed',this)">🎭 משולב</button>
+    <button class="mood-btn" data-mood="fun" onclick="setMood('fun',this)">💛 מצחיק</button>
+    <button class="mood-btn" data-mood="romantic" onclick="setMood('romantic',this)">💗 זוגי</button>
+    <button class="mood-btn" data-mood="sexual" onclick="setMood('sexual',this)">🔥 מיני</button>
+  </div><br>
+  <label>כמות קלפים:
+    <input id="numCards" type="number" value="10" min="1" max="160">
+  </label><br><br>
+  <button id="startGameBtn" onclick="startGame()">🎮 התחל משחק</button>
+</div>
+
+<div id="gameScreen" style="display:none;">
+  <div id="turnDisplay"></div>
+  <div id="scoreBoard"></div>
+<div id="cardArea"></div>
+<div id="cardsRemaining"></div>
+<div id="timer" style="display:none;"></div>
+<div id="actions">
+  <div id="cardsRemaining">טוען...</div>
+  <button id="drawBtn" onclick="drawCard()">🎴 שלוף קלף</button>
+  <button id="skipBtn" onclick="skipCard()">⏭ דלג</button>
+  <button id="completeBtn" onclick="completeTask()" style="display:none;">✔️ השלמתי</button>
+</div>
+</div>
+
+<div id="summaryScreen" style="display:none;">
+  <h2>🏁 המשחק הסתיים!</h2>
+  <pre id="finalResults"></pre>
+  <button onclick="exportToPDF()">📄 יצא PDF</button>
+  <button onclick="location.reload()">🔁 משחק חדש</button>
+</div>
+
+<script src="cards.js" defer></script>
+<script src="script.js" defer></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js');
+  }
+
+  function enterGame() {
+    document.getElementById('landingScreen').style.display = 'none';
+    document.getElementById('startScreen').style.display = 'flex';
+  }
+
+  function toggleCardIndex() {
+    const panel = document.getElementById('cardIndexPanel');
+    panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function updateCardIndex() {
+    const container = document.getElementById('cardIndexList');
+    container.innerHTML = '';
+    const all = [...played, ...cardsToPlay];
+    all.forEach(card => {
+      const div = document.createElement('div');
+      div.className = 'card-index-item' + (played.includes(card) ? ' card-played' : '');
+      div.textContent = card.text;
+      container.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>
