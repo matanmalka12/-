@@ -166,11 +166,27 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
 
 #cardsRemaining {
   font-size: 14px;
-  color: #666;
+  color: #111 !important;
   margin-top: 6px;
   display: block;
+  background: transparent !important;
+  font-weight: normal;
+  padding: 0;
+  border: none;
 }
 
 #skipBtn {
   margin-right: 10px;
+}
+#showIndexBtn {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  z-index: 500;
+  padding: 8px 16px;
+  background: white;
+  border-radius: 12px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
 }
