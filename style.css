@@ -165,10 +165,9 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
 }
 
 #cardsRemaining {
-  font-size: 18px;
-  color: red;
-  background-color: yellow;
-  padding: 10px;
+  font-size: 14px;
+  color: #666;
+  margin-top: 6px;
   display: block;
 }
 
