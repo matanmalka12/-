@@ -169,8 +169,8 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
 }
 #showIndexBtn {
   position: fixed;
-  bottom: 10px;
-  left: 10px;
+  top: 10px;
+  right: 10px;
   z-index: 500;
   padding: 8px 16px;
   background: white;
@@ -178,6 +178,7 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
   border: none;
   font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -204,4 +205,30 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
 #cardsRemaining.loaded,
 #timer.loaded {
   visibility: visible !important;
+}
+
+#closeIndexBtn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: white;
+  cursor: pointer;
+}
+
+#cardIndexPanel {
+  max-width: 85%;
+}
+
+/* שדרוג פס גלילה עבור cardIndexPanel בדפדפנים תומכים (WebKit) */
+#cardIndexPanel::-webkit-scrollbar {
+  width: 6px;
+}
+
+#cardIndexPanel::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
