@@ -164,17 +164,6 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
   color: #555;
 }
 
-#cardsRemaining {
-  font-size: 14px;
-  color: #111 !important;
-  margin-top: 6px;
-  display: block;
-  background: transparent !important;
-  font-weight: normal;
-  padding: 0;
-  border: none;
-}
-
 #skipBtn {
   margin-right: 10px;
 }
@@ -189,4 +178,26 @@ button[data-mood="sexual"]   { background: #ff9aa2; }
   border: none;
   font-weight: bold;
   cursor: pointer;
+}
+#cardsRemaining,
+#cardsRemaining span,
+#cardsRemaining div {
+  font-size: 14px;
+  color: #111 !important;
+  margin-top: 6px;
+  display: block;
+  background: transparent !important;
+  font-weight: normal;
+  padding: 0;
+  border: none !important;
+}
+
+/* ביטול רקע רק לאזורים קריטיים */
+body,
+#gameScreen,
+#turnDisplay,
+#scoreBoard,
+.card-text,
+.card-level-icon {
+  background-color: transparent !important;
 }
